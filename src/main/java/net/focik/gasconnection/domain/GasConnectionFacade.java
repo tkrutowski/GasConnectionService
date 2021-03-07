@@ -11,18 +11,12 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-//@NoArgsConstructor
 public class GasConnectionFacade {
 
-    //@Qualifier("inMemoryClientRepositoryAdapter")
     private IGasConnectionRepository gasConnectionRepository;
     private GasConnectionFactory gasConnectionFactory;
 
-//    @Value("${local.server.port}")
-//    private int port;
-
     public Integer addGasConnection(GasConnectionDbDto customerDbDto) {
-int i=0;
          return gasConnectionRepository.add(customerDbDto);
     }
 

@@ -3,6 +3,8 @@ package net.focik.gasconnection.infrastructure.clients;
 import lombok.extern.log4j.Log4j2;
 import net.focik.gasconnection.domain.port.IScopeGasConnectionRepository;
 import net.focik.gasconnection.infrastructure.dto.ScopeGasConnectionDto;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
@@ -13,7 +15,9 @@ import java.util.List;
 
 @Component
 @Log4j2
-class ScopeGasConnectionClient implements IScopeGasConnectionRepository {
+@Primary
+@Profile("!dev")
+public class ScopeGasConnectionClient implements IScopeGasConnectionRepository {
 
     private RestTemplate restTemplate = new RestTemplate();
 
@@ -23,12 +27,12 @@ class ScopeGasConnectionClient implements IScopeGasConnectionRepository {
     public List<ScopeGasConnectionDto> findScopeGasConnectionByIdTask(Integer idtask) {
         List<ScopeGasConnectionDto> connectionDtos = new ArrayList<>();
         try {
-        ResponseEntity<ScopeGasConnectionDto[]> response =
-                restTemplate.getForEntity(URI+idtask, ScopeGasConnectionDto[].class);
+            ResponseEntity<ScopeGasConnectionDto[]> response =
+                    restTemplate.getForEntity(URI + idtask, ScopeGasConnectionDto[].class);
 
-        connectionDtos = List.of(response.getBody());
-        }catch (RestClientException ex){
-log.error("Error", ex.fillInStackTrace());            //TODO może rzucić wyjątek
+            connectionDtos = List.of(response.getBody());
+        } catch (RestClientException ex) {
+            log.error("Error", ex.fillInStackTrace());            //TODO może rzucić wyjątek
             return connectionDtos;
         }
 

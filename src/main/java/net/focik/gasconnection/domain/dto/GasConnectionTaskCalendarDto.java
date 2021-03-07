@@ -14,11 +14,11 @@ import lombok.Setter;
 //@Entity
 //@Table(name = "userbooks")
 public class GasConnectionTaskCalendarDto implements IGasConnectionDto {
-    private Integer id;
+    private Integer idTask;
     private Integer idCustomer;
     private Integer idSurveyor;
     private String taskNo;
-    private boolean isPgn;
+    private Boolean isPgn;
     private String gasCabinetProvider;
     private Integer idAddress;
 }

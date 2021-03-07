@@ -8,6 +8,6 @@ class GasConnection {
     private Integer idSurveyor;
     private String taskNo;
     private boolean isPgn;
-    private GasCabinetProviderType gasCabinetProvider;
+//    private GasCabinetProviderType gasCabinetProvider;
     private Integer idAddress;
 }

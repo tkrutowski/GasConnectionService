@@ -20,11 +20,11 @@ import javax.persistence.Table;
 public class GasConnectionDbDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer idTask;
     private Integer idCustomer;
     private Integer idSurveyor;
     private String taskNo;
-    private boolean isPgn;
+    private Boolean isPgn;
 //    @Convert(converter = GasCabinetProviderTypeConverter.class)
 //    private GasCabinetProviderType gasCabinetProvider;
     private Integer idAddress;

@@ -3,12 +3,14 @@ package net.focik.gasconnection.infrastructure.inMemory;
 import lombok.extern.java.Log;
 import net.focik.gasconnection.domain.port.IGasConnectionRepository;
 import net.focik.gasconnection.infrastructure.dto.GasConnectionDbDto;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Optional;
 
-//@Component()
-//@Primary
+@Component()
+@Profile("dev")
 @Log
 class InMemoryGasConnectionRepositoryAdapter implements IGasConnectionRepository {
     private HashMap<Integer, GasConnectionDbDto> gasConnectionDbDtoHashMap = new HashMap<>();
@@ -21,7 +23,7 @@ class InMemoryGasConnectionRepositoryAdapter implements IGasConnectionRepository
         if(dbDto == null)
             throw new NullPointerException("ClientDbDto cannot be null");
         Integer id = gasConnectionDbDtoHashMap.size() + 1;
-        dbDto.setId(id);
+        dbDto.setIdTask(id);
         gasConnectionDbDtoHashMap.put(id,dbDto);
         log.info("Succssec id = " + id);
         return id;
