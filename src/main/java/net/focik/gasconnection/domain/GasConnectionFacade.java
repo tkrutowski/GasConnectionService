@@ -25,6 +25,10 @@ public class GasConnectionFacade {
         int i=0;
         Optional<GasConnectionDbDto> byId = gasConnectionRepository.findById(id);
 
+        if(byId.isEmpty())
+            return null;
+
         return gasConnectionFactory.createGasConnectionByDtoType(byId.get(), dtoType);
+
     }
 }

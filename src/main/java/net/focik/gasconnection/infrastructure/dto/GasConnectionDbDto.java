@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "gas")
+@Table(name = "gas_connections_view")
 public class GasConnectionDbDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
