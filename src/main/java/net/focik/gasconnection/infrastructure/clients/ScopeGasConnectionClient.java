@@ -1,5 +1,7 @@
 package net.focik.gasconnection.infrastructure.clients;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -29,6 +31,18 @@ public class ScopeGasConnectionClient implements IScopeGasConnectionRepository {
     //TODO dodać stałą z propertisów
     private static final String URI = "http://scope-gasconnection-service/api/scopegasconnection/task/";
 
+    @HystrixCommand(fallbackMethod = "getFallbackListOfScopeGasConnectionDto",
+    commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "2000"),
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "6"),
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50"),
+            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000")
+    },
+    threadPoolKey = "scopePool",
+    threadPoolProperties = {
+            @HystrixProperty(name = "coreSize", value = "20"),
+            @HystrixProperty(name = "maxQueueSize", value = "10")
+    })
     public List<ScopeGasConnectionDto> findScopeGasConnectionByIdTask(Integer idtask) {
         List<ScopeGasConnectionDto> connectionDtos = new ArrayList<>();
         try {
@@ -40,6 +54,12 @@ public class ScopeGasConnectionClient implements IScopeGasConnectionRepository {
             log.error("Error", ex.fillInStackTrace());            //TODO może rzucić wyjątek
             return connectionDtos;
         }
+
+        return connectionDtos;
+    }
+
+    private List<ScopeGasConnectionDto> getFallbackListOfScopeGasConnectionDto(Integer idtask) {
+        List<ScopeGasConnectionDto> connectionDtos = new ArrayList<>();
 
         return connectionDtos;
     }
