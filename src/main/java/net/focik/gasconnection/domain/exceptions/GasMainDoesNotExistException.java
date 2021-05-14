@@ -1,4 +1,4 @@
-package net.focik.taskcalendar.domain.exceptions;
+package net.focik.gasconnection.domain.exceptions;
 
 public class GasMainDoesNotExistException extends ObjectDoesNotExistException{
     public GasMainDoesNotExistException(Integer id) {

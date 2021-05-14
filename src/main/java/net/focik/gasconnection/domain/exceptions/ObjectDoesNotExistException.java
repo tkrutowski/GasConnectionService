@@ -1,4 +1,4 @@
-package net.focik.taskcalendar.domain.exceptions;
+package net.focik.gasconnection.domain.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
