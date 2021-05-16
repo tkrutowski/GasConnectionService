@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 class GasConnectionFactoryTest {
 
 
@@ -57,7 +57,7 @@ class GasConnectionFactoryTest {
         assertEquals(4, taskCalendarDto.getIdAddress());
         assertEquals("task3", taskCalendarDto.getTaskNo());
         assertEquals(true, taskCalendarDto.getIsPgn());
-        assertEquals("CUSTOMER", taskCalendarDto.getGasCabinetProvider());
+        assertEquals("Klient", taskCalendarDto.getGasCabinetProvider());
     }
 
     private GasConnectionDbDto createDto() {

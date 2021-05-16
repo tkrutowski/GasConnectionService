@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Profile("dev")
+@Profile("test")
 public class InMemeoryScopeGasConnectionRepository implements IScopeGasConnectionRepository {
     @Override
     public List<ScopeGasConnectionDto> findScopeGasConnectionByIdTask(Integer idtask) {
-        return  List.of(new ScopeGasConnectionDto(1, 1, "GAS_CONNECTION", "brak", 23, 12.3f, "brak", "SDR 11", 12.5f, "CUSTOMER", LocalDate.of(2020, 05, 04)));
+        return  List.of(new ScopeGasConnectionDto(1, 1, "GAS_CONNECTION", "brak", 23, 12.3f, "brak", "SDR 11", 12.5f, "Klient", LocalDate.of(2020, 05, 04)));
 
         //return new ArrayList<>();
     }
