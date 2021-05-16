@@ -1,7 +1,5 @@
 package net.focik.gasconnection.domain;
 
-import net.focik.gasconnection.domain.share.GasCabinetProviderType;
-
 class GasConnection {
     private Integer idTask;
     private Integer idCustomer;

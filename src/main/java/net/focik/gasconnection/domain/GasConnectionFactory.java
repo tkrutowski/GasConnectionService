@@ -1,22 +1,21 @@
 package net.focik.gasconnection.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
 import net.focik.gasconnection.domain.dto.GasConnectionTaskCalendarDto;
 import net.focik.gasconnection.domain.dto.IGasConnectionDto;
 import net.focik.gasconnection.domain.port.IScopeGasConnectionRepository;
 import net.focik.gasconnection.domain.share.DtoType;
-import net.focik.gasconnection.domain.share.GasCabinetProviderType;
 import net.focik.gasconnection.infrastructure.dto.GasConnectionDbDto;
 import net.focik.gasconnection.infrastructure.dto.ScopeGasConnectionDto;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 @AllArgsConstructor
+@Log
 class GasConnectionFactory {
 
     private ModelMapper mapper;
@@ -39,16 +38,17 @@ class GasConnectionFactory {
     }
 
     private GasConnectionTaskCalendarDto createGasConnectionTaskCalendarDto(GasConnectionDbDto dbDto) {
+        GasConnectionTaskCalendarDto mappedDto = mapper.map(dbDto, GasConnectionTaskCalendarDto.class);
+
         List<ScopeGasConnectionDto> scopeGasConnectionList = scopeGasConnectionRepository.findScopeGasConnectionByIdTask(dbDto.getIdTask());
-        GasConnectionTaskCalendarDto map = mapper.map(dbDto, GasConnectionTaskCalendarDto.class);
 
         if(scopeGasConnectionList.size() == 1){
-            map.setGasCabinetProvider(scopeGasConnectionList.get(0).getGasCabinetProvider());
+            mappedDto.setGasCabinetProvider(scopeGasConnectionList.get(0).getGasCabinetProvider());
         }
         else
-            map.setGasCabinetProvider(GasCabinetProviderType.UNKNOW.toString());
+            mappedDto.setGasCabinetProvider("Brak danych.");
 
-        return map;
+        return mappedDto;
     }
 
 }

@@ -28,28 +28,29 @@ public class ScopeGasConnectionClient implements IScopeGasConnectionRepository {
 
     private RestTemplate restTemplate ;
 
-    //TODO dodać stałą z propertisów
     private static final String URI = "http://scope-gasconnection-service/api/scopegasconnection/task/";
 
     @HystrixCommand(fallbackMethod = "getFallbackListOfScopeGasConnectionDto",
-    commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "2000"),
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "6"),
-            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50"),
-            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000")
-    },
-    threadPoolKey = "scopePool",
-    threadPoolProperties = {
-            @HystrixProperty(name = "coreSize", value = "20"),
-            @HystrixProperty(name = "maxQueueSize", value = "10")
-    })
-    public List<ScopeGasConnectionDto> findScopeGasConnectionByIdTask(Integer idtask) {
+            commandProperties = {
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "2000"),
+                    @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "6"),
+                    @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50"),
+                    @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000")
+            },
+            threadPoolKey = "scopePool",
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "20"),
+                    @HystrixProperty(name = "maxQueueSize", value = "10")
+            })
+    public List<ScopeGasConnectionDto> findScopeGasConnectionByIdTask(Integer idTask) {
+        log.info("Try find scope-gasconnection for gasconnection id = " + idTask);
         List<ScopeGasConnectionDto> connectionDtos = new ArrayList<>();
         try {
             ResponseEntity<ScopeGasConnectionDto[]> response =
-                    restTemplate.getForEntity(URI + idtask, ScopeGasConnectionDto[].class);
+                    restTemplate.getForEntity(URI + idTask, ScopeGasConnectionDto[].class);
 
             connectionDtos = List.of(response.getBody());
+            log.info("Found " + connectionDtos.size() + " scope-gasconnection for gasconnection id = " + idTask);
         } catch (RestClientException ex) {
             log.error("Error", ex.fillInStackTrace());            //TODO może rzucić wyjątek
             return connectionDtos;
