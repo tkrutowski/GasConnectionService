@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @Log4j2
 @Primary
-@Profile("dev")
+@Profile({"dev", "prod"})
 public class ScopeGasConnectionClient implements IScopeGasConnectionRepository {
 
 
@@ -32,7 +32,7 @@ public class ScopeGasConnectionClient implements IScopeGasConnectionRepository {
 
     @HystrixCommand(fallbackMethod = "getFallbackListOfScopeGasConnectionDto",
             commandProperties = {
-                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "2000"),
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "4000"),
                     @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "6"),
                     @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50"),
                     @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000")
@@ -43,16 +43,16 @@ public class ScopeGasConnectionClient implements IScopeGasConnectionRepository {
                     @HystrixProperty(name = "maxQueueSize", value = "10")
             })
     public List<ScopeGasConnectionDto> findScopeGasConnectionByIdTask(Integer idTask) {
-        log.info("Try find scope-gasconnection for gasconnection id = " + idTask);
+        log.info("GASCONNECTION-SERVICE: Try find scope-gasconnection for gasconnection id = " + idTask);
         List<ScopeGasConnectionDto> connectionDtos = new ArrayList<>();
         try {
             ResponseEntity<ScopeGasConnectionDto[]> response =
                     restTemplate.getForEntity(URI + idTask, ScopeGasConnectionDto[].class);
 
             connectionDtos = List.of(response.getBody());
-            log.info("Found " + connectionDtos.size() + " scope-gasconnection for gasconnection id = " + idTask);
+            log.info("GASCONNECTION-SERVICE: Found " + connectionDtos.size() + " scope-gasconnection for gasconnection id = " + idTask);
         } catch (RestClientException ex) {
-            log.error("Error", ex.fillInStackTrace());            //TODO może rzucić wyjątek
+            log.error("GASCONNECTION-SERVICE: Error", ex.fillInStackTrace());            //TODO może rzucić wyjątek
             return connectionDtos;
         }
 
