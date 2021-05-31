@@ -54,7 +54,7 @@ class GasConnectionFactoryTest {
         assertEquals(1, taskCalendarDto.getIdTask());
         assertEquals(2, taskCalendarDto.getIdCustomer());
         assertEquals(3, taskCalendarDto.getIdSurveyor());
-        assertEquals(4, taskCalendarDto.getIdAddress());
+       // assertEquals(4, taskCalendarDto.getAddress());
         assertEquals("task3", taskCalendarDto.getTaskNo());
         assertEquals(true, taskCalendarDto.getIsPgn());
         assertEquals("Klient", taskCalendarDto.getGasCabinetProvider());

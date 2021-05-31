@@ -20,5 +20,5 @@ public class GasConnectionTaskCalendarDto implements IGasConnectionDto {
     private String taskNo;
     private Boolean isPgn;
     private String gasCabinetProvider;
-    private Integer idAddress;
+    private String address;
 }
