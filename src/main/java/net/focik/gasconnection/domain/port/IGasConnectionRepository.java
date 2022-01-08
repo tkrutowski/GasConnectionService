@@ -1,6 +1,6 @@
 package net.focik.gasconnection.domain.port;
 
-import net.focik.gasconnection.infrastructure.dto.GasConnectionDbDto;
+import net.focik.gasconnection.domain.GasConnection;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -8,15 +8,8 @@ import java.util.Optional;
 @Component
 public interface IGasConnectionRepository {
 
-    Integer add(GasConnectionDbDto gasConnectionDbDto);
+    Integer add(GasConnection gasConnection);
 
-    Optional<GasConnectionDbDto> findById(Integer id);
-//
-//    List<Client> findAll();
-//
-//    void delete(Long id);
-//
-//    Optional<Client> edit(Client author);
-//
-//    Optional<Client> findByNip(String nip);
+    Optional<GasConnection> findById(Integer id);
+
 }

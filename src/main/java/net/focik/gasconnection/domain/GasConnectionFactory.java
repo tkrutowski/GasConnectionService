@@ -2,19 +2,14 @@ package net.focik.gasconnection.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
-import net.focik.gasconnection.domain.dto.GasConnectionTaskCalendarDto;
-import net.focik.gasconnection.domain.dto.IGasConnectionDto;
-import net.focik.gasconnection.domain.exceptions.AddressNotExistException;
+import net.focik.addresses.domain.Address;
+import net.focik.gasconnection.domain.exceptions.GasConnectionDoesNotExistException;
 import net.focik.gasconnection.domain.port.IAddressRepository;
+import net.focik.gasconnection.domain.port.IGasConnectionRepository;
 import net.focik.gasconnection.domain.port.IScopeGasConnectionRepository;
-import net.focik.gasconnection.domain.share.DtoType;
-import net.focik.gasconnection.infrastructure.dto.AddressDto;
-import net.focik.gasconnection.infrastructure.dto.GasConnectionDbDto;
-import net.focik.gasconnection.infrastructure.dto.ScopeGasConnectionDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -22,46 +17,29 @@ import java.util.Optional;
 @Log
 class GasConnectionFactory {
 
-    private ModelMapper mapper;
     IAddressRepository addressRepository;
-    private IScopeGasConnectionRepository scopeGasConnectionRepository;
+    //private IScopeGasConnectionRepository scopeGasConnectionRepository;
+    private IGasConnectionRepository gasConnectionRepository;
 
-    IGasConnectionDto createGasConnectionByDtoType(GasConnectionDbDto dbDto, DtoType dtoType) {
-        IGasConnectionDto gasConnectionDto = null;
+    public GasConnection createGasConnectionById(Integer id) {
+        Optional<GasConnection> byId = gasConnectionRepository.findById(id);
 
-        switch (dtoType) {
-            case TASK_CALENDAR:
-                gasConnectionDto = createGasConnectionTaskCalendarDto(dbDto);
-                break;
-            case GAS_CONNECTION:
-                break;
-        }
+        if(byId.isEmpty())
+            throw new GasConnectionDoesNotExistException(id);
 
+        GasConnection gasConnection = byId.get();
+        gasConnection.setAddress(getAddress(gasConnection.getAddress().getId()));
 
-        return gasConnectionDto;
+        return gasConnection;
     }
 
-    private GasConnectionTaskCalendarDto createGasConnectionTaskCalendarDto(GasConnectionDbDto dbDto) {
-        GasConnectionTaskCalendarDto mappedDto = mapper.map(dbDto, GasConnectionTaskCalendarDto.class);
+    private Address getAddress(Long idAddress) {
+        Optional<Address> addressById = addressRepository.findAddressById(idAddress);
 
-        Optional<AddressDto> addressById = getAddressDto(dbDto.getIdAddress());
+        if(addressById.isEmpty())
+            return new Address(idAddress, "brak danych", "brak danych", "brak danych","brak danych",null);
 
-        mappedDto.setAddress(addressById.get().getFullAddress());
-
-        List<ScopeGasConnectionDto> scopeGasConnectionList = scopeGasConnectionRepository.findScopeGasConnectionByIdTask(dbDto.getIdTask());
-
-        if(scopeGasConnectionList.size() == 1){
-            mappedDto.setGasCabinetProvider(scopeGasConnectionList.get(0).getGasCabinetProvider());
-        }
-        else
-            mappedDto.setGasCabinetProvider("Brak danych.");
-
-        return mappedDto;
+        return addressById.get();
     }
-    private Optional<AddressDto> getAddressDto(Integer idAddress) {
-        Optional<AddressDto> addressById = addressRepository.findAddressById(idAddress);
-        if (addressById.isEmpty())
-            throw new AddressNotExistException(idAddress);
-        return addressById;
-    }
+
 }

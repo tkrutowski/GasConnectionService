@@ -1,18 +1,12 @@
-package net.focik.gasconnection.domain.dto;
+package net.focik.gasconnection.api.dto;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-//import net.focik.customers.domain.ClientType;
 
-//
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder
 @Getter
 @Setter
-//@Entity
-//@Table(name = "userbooks")
 public class GasConnectionTaskCalendarDto implements IGasConnectionDto {
     private Integer idTask;
     private Integer idCustomer;
